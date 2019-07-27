@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import * as courseActions from "../../redux/actions/courseActions";
+import PropTypes from "prop-types";
 
 class CoursesPage extends Component {
   state = {
@@ -12,7 +15,7 @@ class CoursesPage extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    alert(this.state.course.title);
+    this.props.dispatch(courseActions.createCourse(this.state.course));
   };
 
   render() {
@@ -31,4 +34,14 @@ class CoursesPage extends Component {
   }
 }
 
-export default CoursesPage;
+CoursesPage.PropTypes = {
+  dispatch: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => {
+  return {
+    courses: state.courses
+  };
+};
+
+export default connect(mapStateToProps)(CoursesPage);
