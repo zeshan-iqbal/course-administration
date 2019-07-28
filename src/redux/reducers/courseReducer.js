@@ -1,8 +1,12 @@
-export default (courseReducer = (state = [], action) => {
+import * as actionTypes from "../actions/actionTypes";
+
+const courseReducer = (state = [], action) => {
   switch (action.type) {
-    case "CREATE_COURSE":
+    case actionTypes.CREATE_COURSE:
       return [...state, action.course];
     default:
       return state;
   }
-});
+};
+
+export default courseReducer;
