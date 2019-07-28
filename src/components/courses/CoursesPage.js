@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+//import { bindActionCreators } from "redux";
 import { loadCourses } from "../../redux/actions/courseActions";
 import { loadAuthors } from "../../redux/actions/authorActions";
 import PropTypes from "prop-types";
@@ -12,10 +12,10 @@ class CoursesPage extends Component {
   };
 
   componentDidMount() {
-    const { courses, authors, actions } = this.props;
-    if (courses.length === 0) actions.loadCourses();
+    const { courses, authors, loadCourses, loadAuthors } = this.props;
+    if (courses.length === 0) loadCourses();
 
-    if (Object.entries(authors).length === 0) actions.loadAuthors();
+    if (Object.entries(authors).length === 0) loadAuthors();
   }
 
   render() {
@@ -31,7 +31,8 @@ class CoursesPage extends Component {
 CoursesPage.propTypes = {
   courses: PropTypes.array.isRequired,
   authors: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+  loadCourses: PropTypes.func.isRequired,
+  loadAuthors: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -48,13 +49,9 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    actions: {
-      loadCourses: bindActionCreators(loadCourses, dispatch),
-      loadAuthors: bindActionCreators(loadAuthors, dispatch)
-    }
-  };
+const mapDispatchToProps = {
+  loadCourses,
+  loadAuthors
 };
 
 export default connect(
