@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 //import { bindActionCreators } from "redux";
 import { loadCourses } from "../../redux/actions/courseActions";
 import { loadAuthors } from "../../redux/actions/authorActions";
@@ -8,20 +9,27 @@ import CourseList from "./CourseList";
 
 class CoursesPage extends Component {
   state = {
-    course: { title: "" }
+    redirectToAddCoursePage: false
   };
-
   componentDidMount() {
     const { courses, authors, loadCourses, loadAuthors } = this.props;
     if (courses.length === 0) loadCourses();
 
-    if (Object.entries(authors).length === 0) loadAuthors();
+    if (Object.keys(authors).length === 0) loadAuthors();
   }
 
   render() {
     return (
       <>
+        {this.state.redirectToAddCoursePage && <Redirect to="/course" />}
         <h2>Courses</h2>
+        <button
+          style={{ marginBottom: 20 }}
+          className="btn btn-primary btn-add"
+          onClick={() => this.setState({ redirectToAddCoursePage: true })}
+        >
+          Add Course
+        </button>
         <CourseList courses={this.props.courses} />
       </>
     );
@@ -37,7 +45,7 @@ CoursesPage.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    courses: Object.entries(state.authors).length
+    courses: Object.keys(state.authors).length
       ? state.courses.map(course => {
           return {
             ...course,
